@@ -1,29 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddTask from "./components/AddTask";
 import Task from "./components/Task";
+import Title from './components/Title';
 import { v4 } from "uuid";
 
 function App() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Estudar Programação",
-      description: "Estudar React e Java",
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: "Estudar Ingles",
-      description: "Estudar 2 horas por dia de inglês",
-      isCompleted: false,
-    },
-    {
-      id: 3,
-      title: "Arrumar a casa",
-      description: "Lavar a louça, arrumar o quarto, varrer o chão",
-      isCompleted: false,
-    },
-  ]);
+  const [tasks, setTasks] =
+    useState(JSON.parse(localStorage.getItem("tasks"))) || [];
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  // useEffect(() => {
+  //   const fetchTask = async () => {
+  //     const response = await fetch(
+  //       "https://jsonplaceholder.typicode.com/todos?_limit=10",
+  //       {
+  //         method: "GET",
+  //       }
+  //     );
+  //     const data = await response.json();
+      
+  //     setTasks(data)
+  //   };
+  //   fetchTask();
+  // }, []);
 
   function onTaskClick(taskId) {
     const newTasks = tasks.map((task) => {
@@ -52,13 +54,17 @@ function App() {
   }
 
   return (
-    <div className="w-screen h-screen bg-slate-500 flex justify-center p-6">
-      <div className="w-[500px] space-y-4">
-        <h1 className="text-3xl text-slate-100 font-bold text-center">
+    <div className="w-screen  bg-slate-500 h-screen flex justify-center p-6">
+      <div className="w-[500px]  space-y-4">
+        <Title>
           Gerenciador de Tarefas
-        </h1>
-        <AddTask OnAddTask={OnAddTask}/>
-        <Task tasks={tasks} onTaskClick={onTaskClick} deleteTask={OnDeleteTask} />
+        </Title>
+        <AddTask OnAddTask={OnAddTask} />
+        <Task
+          tasks={tasks}
+          onTaskClick={onTaskClick}
+          deleteTask={OnDeleteTask}
+        />
       </div>
     </div>
   );
