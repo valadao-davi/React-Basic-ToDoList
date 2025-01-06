@@ -1,6 +1,6 @@
 import { ChevronRightIcon, X } from "lucide-react";
 
-function Task({tasks, deleteTask, onTaskClick}) {
+function Task({tasks, deleteTask, onTaskClick, addTask}) {
   return (
     <ul className="space-y-4 p-6 bg-slate-200 rounded-md shadow">
       {tasks.map((task) => (
